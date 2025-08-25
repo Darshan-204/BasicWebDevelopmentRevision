@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Whack-a-Circle</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #222;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    #score {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 24px;
+    }
+    .circle {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: crimson;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="score">Score: 0</div>
+
+  <script>
+    let score = 0;
+    let timeLeft = 30; // seconds
+
+    function createCircle() {
+      const circle = document.createElement("div");
+      circle.classList.add("circle");
+
+      // random position
+      const x = Math.random() * (window.innerWidth - 50);
+      const y = Math.random() * (window.innerHeight - 50);
+
+      circle.style.left = `${x}px`;
+      circle.style.top = `${y}px`;
+
+      // when clicked, increase score
+      circle.addEventListener("click", () => {
+        score++;
+        document.getElementById("score").innerText = `Score: ${score}`;
+        circle.remove();
+      });
+
+      document.body.appendChild(circle);
+
+      // remove after 1 second if not clicked
+      setTimeout(() => circle.remove(), 2000);
+    }
+
+    // create a circle every 1 sec
+    const gameInterval = setInterval(() => {
+      if (timeLeft <= 0) {
+        clearInterval(gameInterval);
+        alert(`Game Over! Final Score: ${score}`);
+      } else {
+        createCircle();
+        timeLeft--;
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
