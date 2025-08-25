@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Circle Intersection</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #f0f0f0;
+      overflow: hidden;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+    }
+
+    .circle {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: red;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    #message {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      font-size: 20px;
+      font-weight: bold;
+      color: blue;
+    }
+  </style>
+</head>
+<body>
+  <div id="message"></div>
+
+  <script>
+    const circles = []; // store circle objects
+    const radius = 30;  // half of width/height
+
+    document.addEventListener("click", function(event) {
+      // Create circle element
+      const circle = document.createElement("div");
+      circle.classList.add("circle");
+
+      // Position it
+      circle.style.left = event.clientX + "px";
+      circle.style.top = event.clientY + "px";
+
+      // Add to body
+      document.body.appendChild(circle);
+
+      // Save circle data (center position + element)
+      const newCircle = { 
+        x: event.clientX, 
+        y: event.clientY, 
+        el: circle 
+      };
+      circles.push(newCircle);
+
+      // Remove this circle after 5 seconds
+      setTimeout(() => {
+        circle.remove(); // remove from DOM
+        const index = circles.indexOf(newCircle);
+        if (index > -1) circles.splice(index, 1); // remove from array
+      }, 5000);
+
+      // Check for intersections
+      for (let i = 0; i < circles.length - 1; i++) {
+        const dx = newCircle.x - circles[i].x;
+        const dy = newCircle.y - circles[i].y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 2 * radius) {
+          document.getElementById("message").innerText = "Intersect!";
+          return;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

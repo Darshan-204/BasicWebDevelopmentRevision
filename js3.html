@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remove Color in Order</title>
+  <style>
+    .item {
+      border: 2px solid black;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: auto auto;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid">
+    <div class="item">Item 1</div>
+    <div class="item">Item 2</div>
+    <div class="item">Item 3</div>
+    <div class="item">Item 4</div>
+    <div class="item">Item 5</div>
+    <div class="item">Item 6</div>
+    <div class="item">Item 7</div>
+    <div class="item">Item 8</div>
+    <div class="item">Item 9</div>
+  </div>
+
+  <script>
+    const items = document.querySelectorAll('.item');
+    const queue = []; // to track order of colored items
+
+    items.forEach(item => {
+      item.addEventListener('click', function() {
+        // color the clicked item
+        this.style.backgroundColor = 'lightblue';
+
+        // add to queue
+        queue.push(this);
+
+        // schedule removal after 6 sec
+        setTimeout(() => {
+          const first = queue.shift(); // remove first item in queue
+          if (first) {
+            first.style.backgroundColor = ''; // reset color
+          }
+        }, 10000);
+      });
+    });
+  </script>
+</body>
+</html>
